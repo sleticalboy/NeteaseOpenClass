@@ -64,6 +64,13 @@ public final class JNIHelper {
         return nArraySum(array);
     }
 
+    public void sayHello() {
+        dynamicRegister(Long.MAX_VALUE);
+    }
+
+    /////////////////静态注册///////////////////////
+    // 先由Java得到本地方法的声明，然后再通过JNI实现该声明方法
+
     /**
      * 图片压缩
      *
@@ -82,4 +89,8 @@ public final class JNIHelper {
      */
     private native int nArraySum(int[] array);
 
+    /////////////////动态注册///////////////////////
+    // 先通过JNI重载JNI_OnLoad()实现本地方法，然后直接在Java中调用本地方法。
+
+    private native void dynamicRegister(long arg);
 }

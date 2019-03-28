@@ -10,6 +10,9 @@
 #include <malloc.h>
 #include "include/jpeglib.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #define LOG_TAG "Luban"
 #define LOG_I(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
 #define LOG_E(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
@@ -151,4 +154,59 @@ JNIEXPORT jint JNICALL Java_com_sleticalboy_ic_JNIHelper_nArraySum(
     (*env)->ReleaseIntArrayElements(env, array_, array, 0);
     LOG_I("native array sum is %d", result);
     return result;
+}
+
+////////////////////////// 动态注册方式 //////////////////////
+
+static void dynamicRegister(JNIEnv *env, jobject obj, jlong arg) {
+    LOG_I("dynamic register method success");
+}
+
+// 声明 native 方法所在的类名
+static const char *cls_name = "com/sleticalboy/ic/JNIHelper";
+// 声明需要注册的方法表
+static JNINativeMethod GetMethodTables[] = {
+        // {方法名， 方法签名[(参数)返回值]， c 函数指针}
+        {"dynamicRegister", "(J)V", (void*)dynamicRegister},
+};
+/*
+ * java 数据类型、方法 -> 签名
+ *
+ * boolean      -> Z
+ * byte         -> B
+ * char         -> C
+ * short        -> S
+ * int          -> I
+ * long         -> J
+ * float        -> F
+ * double       -> D
+ * int[]        -> [I                   // 基本数据类型数组
+ * String[]     -> [Ljava/lang/Object   // 非基本数据类型数组
+ * <init>       -> ()V                  // 构造函数
+ * void(long)   -> (J)V                 // 方法
+ */
+
+// void RegisterNativeMethods(JNIEnv *pInterface, const char *name, JNINativeMethod tables[1], size_t i);
+static void RegisterNativeMethods(JNIEnv *env, const char *cls_name, const JNINativeMethod *methods, int count) {
+    LOG_I("start register methods");
+    jclass clazz = (*env)->FindClass(env, cls_name);
+    if (clazz == NULL) {
+        LOG_E("couldn't find class %s", cls_name);
+        return;
+    }
+    if ((*env)->RegisterNatives(env, clazz, methods, count) < 0) {
+        LOG_E("register method failed for class %s", cls_name);
+    }
+    (*env)->DeleteLocalRef(env, clazz);
+}
+
+// 重载 jni.h JNI_OnLoad() 方法
+jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+    LOG_I("override JNI_OnLoad() method");
+    JNIEnv *env = NULL;
+    if ((*vm)->GetEnv(vm, (void **) &env, JNI_VERSION_1_4) != JNI_OK) {
+        return -1;
+    }
+    RegisterNativeMethods(env, cls_name, GetMethodTables, sizeof(GetMethodTables) / sizeof(JNINativeMethod));
+    return JNI_VERSION_1_4;
 }
