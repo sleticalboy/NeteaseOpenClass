@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        applicationId "com.sleticalboy.ic"
+        minSdkVersion 19
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        externalNativeBuild {
+            cmake {
+                cppFlags ''
+                abiFilters 'armeabi-v7a'/*, 'x86', 'arm64-v8a', 'x86_64'*/
+            }
+        }
+        // svg 生成对应像素屏幕的图片
+        // vectorDrawables.generatedDensities()
+        // vectorDrawables.useSupportLibrary = true
+        // 移除无用的国际化文件
+        resConfigs('en', 'zh-rCN')
+        // 移除无用的 resource 文件
+        // 1, Refector -> Remove Unused Resources
+        // 2, 使用 Lint 检查
+        // 3, 使用代码混淆
+    }
+
+    buildTypes {
+        debug {
+            // 代码压缩
+            minifyEnabled true
+            // 资源压缩
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // sourceSets {
+    //     main {
+    //         jniLibs.srcDirs = ['jniLibs']
+    //         jni.srcDirs = []
+    //     }
+    // }
+
+    externalNativeBuild {
+        cmake {
+            path 'CMakeLists.txt'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.core:core-ktx:1.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+}
