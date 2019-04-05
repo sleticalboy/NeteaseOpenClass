@@ -1,0 +1,3 @@
+com/sleticalboy/tinker/MainActivity.class
+com/sleticalboy/tinker/BaseApp.class
+com/sleticalboy/tinker/base/BaseActivity.class
