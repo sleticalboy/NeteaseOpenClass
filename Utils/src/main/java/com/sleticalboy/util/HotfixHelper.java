@@ -19,7 +19,7 @@ public final class HotfixHelper {
 
     private static final String TAG = "HotfixHelper";
 
-    private static final String DEX_DIR = "odex";
+    public static final String DEX_DIR = "odex";
     private static final String DEX_SUFFIX = ".dex";
     private static final String DEX_MAIN = "classes.dex";
     /**

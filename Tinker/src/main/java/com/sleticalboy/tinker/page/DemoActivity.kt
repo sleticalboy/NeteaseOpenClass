@@ -31,9 +31,9 @@ class DemoActivity : BaseActivity() {
     private fun doFix() {
         // 模拟下载下来的修复文件
         // /storage/emulated/0/classes2.dex
-        val source = File("/sdcard/", "classes2.dex")
+        val source = File("/sdcard/classes2.dex")
         // 将 source 复制到 base-apk 所在的目录
-        if (FileUtils.copy(source, File(getDir("odex", Context.MODE_PRIVATE), "classes2.dex"))) {
+        if (FileUtils.copy(source, File(getDir(HotfixHelper.DEX_DIR, Context.MODE_PRIVATE), "classes2.dex"))) {
             HotfixHelper.loadHotfixFiles(application)
             if (source.delete()) {
                 Log.d("DemoActivity", "delete src: $source")
