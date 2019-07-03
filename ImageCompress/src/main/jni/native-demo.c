@@ -158,16 +158,50 @@ JNIEXPORT jint JNICALL Java_com_sleticalboy_ic_JNIHelper_nArraySum(
 
 ////////////////////////// 动态注册方式 //////////////////////
 
-static void dynamicRegister(JNIEnv *env, jobject obj, jlong arg) {
+static void dynamicRegister(JNIEnv *env, jobject/*this*/ obj,
+                            jobject/*android.content.Context*/ context,
+                            jobject/*java.lang.CharSequence*/ arg) {
+    /*  android 4.2 之后不能以此种方式创建 Toast
+        final Toast toast = new Toast(context);
+        toast.setText(getClass().getName());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
+        or
+        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+     */
+    const char *clsName = "android/widget/Toast";
+    jclass toastCls = (*env)->FindClass(env, clsName);
+    if (toastCls == NULL) {
+        LOG_E("find %s error.", clsName);
+        return;
+    }
+    const char *desc = "(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;";
+    jmethodID makeText = (*env)->GetStaticMethodID(env, toastCls, "makeText", desc);
+//    jclass charSequenceCls = (*env)->FindClass(env, "java/lang/CharSequence");
+//    jmethodID toString = (*env)->GetMethodID(env, charSequenceCls, "toString", "()Ljava/lang/String;");
+//    jstring orgStr = (*env)->CallObjectMethod(env, arg, toString);
+//    const char *org = (*env)->GetStringUTFChars(env, orgStr, FALSE);
+//    const char *tail = " from native";
+//    char *result = (char *) malloc(strlen(orgStr) + strlen(tail));
+//    strcpy(result, org);
+//    strcat(result, tail);
+//    jstring text = (*env)->NewStringUTF(env, result);
+    jobject toastObj = (*env)->CallStaticObjectMethod(env, toastCls, makeText, context, arg, 0);
+    (*env)->CallVoidMethod(env, toastObj, (*env)->GetMethodID(env, toastCls, "show", "()V"));
     LOG_I("dynamic register method success");
+
+//    (*env)->ReleaseStringUTFChars(env, orgStr, org);
+//    (*env)->ReleaseStringUTFChars(env, text, result);
+    (*env)->DeleteLocalRef(env, toastObj);
 }
 
 // 声明 native 方法所在的类名
 static const char *cls_name = "com/sleticalboy/ic/JNIHelper";
 // 声明需要注册的方法表
 static JNINativeMethod GetMethodTables[] = {
+        // see jni.h struct JNINativeMethod
         // {方法名， 方法签名[(参数)返回值]， c 函数指针}
-        {"dynamicRegister", "(J)V", (void*)dynamicRegister},
+        {"dynamicRegister", "(Landroid/content/Context;Ljava/lang/CharSequence;)V", (void *) dynamicRegister},
 };
 /*
  * java 数据类型、方法 -> 签名
@@ -187,8 +221,9 @@ static JNINativeMethod GetMethodTables[] = {
  */
 
 // void RegisterNativeMethods(JNIEnv *pInterface, const char *name, JNINativeMethod tables[1], size_t i);
-static void RegisterNativeMethods(JNIEnv *env, const char *cls_name, const JNINativeMethod *methods, int count) {
-    LOG_I("start register methods");
+static void RegisterNativeMethods(JNIEnv *env, const char *cls_name, const JNINativeMethod *methods,
+                                  int count) {
+    LOG_I("start register methods %d cls: %s", *methods, cls_name);
     jclass clazz = (*env)->FindClass(env, cls_name);
     if (clazz == NULL) {
         LOG_E("couldn't find class %s", cls_name);
@@ -207,6 +242,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     if ((*vm)->GetEnv(vm, (void **) &env, JNI_VERSION_1_4) != JNI_OK) {
         return -1;
     }
-    RegisterNativeMethods(env, cls_name, GetMethodTables, sizeof(GetMethodTables) / sizeof(JNINativeMethod));
+    RegisterNativeMethods(env, cls_name, GetMethodTables,
+                          sizeof(GetMethodTables) / sizeof(JNINativeMethod));
     return JNI_VERSION_1_4;
 }

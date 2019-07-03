@@ -1,6 +1,8 @@
 package com.sleticalboy.ic
 
+import android.Manifest
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.MessageQueue
 import android.util.Log
@@ -19,11 +21,24 @@ class ImageActivity : AppCompatActivity() {
         Log.d(javaClass.simpleName, "uuid -> " + UUID.randomUUID().toString())
 
         helloWorld.setOnClickListener {
-            compressImage()
-            val sum = JNIHelper.get().sum(intArrayOf(22, 33))
-            Log.d("ImageActivity", "sum is $sum")
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ), 702
+                )
+            } else {
+                compressImage()
+            }
         }
-        JNIHelper.get().sayHello()
+        button1.setOnClickListener {
+            val sum = JNIHelper.get().sum(intArrayOf(22, 33, 45))
+            button1.text = "native sum is $sum"
+        }
+        button2.setOnClickListener {
+            JNIHelper.get().sayHello(this)
+        }
         mainLooper.queue.addIdleHandler(object : MessageQueue.IdleHandler {
             override fun queueIdle(): Boolean {
 //                Toast.makeText(application, "idle handler trigger", Toast.LENGTH_SHORT).show()
@@ -37,12 +52,23 @@ class ImageActivity : AppCompatActivity() {
         })
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 702) {
+            compressImage()
+        }
+    }
+
     private fun compressImage() {
         val dir = File("/sdcard/")
         val src = File(dir, "original.jpg")
         val dest = File(dir, "compressed.jpg")
         val start = System.currentTimeMillis()
-        JNIHelper.get().compress(src, 50, dest.absolutePath)
+        JNIHelper.get().compress(src, 100, dest.absolutePath)
         val cost = System.currentTimeMillis() - start
         Log.d("imageActivity", "compress cost $cost ms")
         image_view.setImageURI(Uri.fromFile(dest))

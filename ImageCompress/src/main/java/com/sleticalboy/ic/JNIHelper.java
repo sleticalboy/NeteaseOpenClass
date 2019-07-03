@@ -1,5 +1,6 @@
 package com.sleticalboy.ic;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -64,8 +65,8 @@ public final class JNIHelper {
         return nArraySum(array);
     }
 
-    public void sayHello() {
-        dynamicRegister(Long.MAX_VALUE);
+    public void sayHello(Context context) {
+        dynamicRegister(context, "native toast: " + getClass().getSimpleName());
     }
 
     /////////////////静态注册///////////////////////
@@ -92,5 +93,5 @@ public final class JNIHelper {
     /////////////////动态注册///////////////////////
     // 先通过JNI重载JNI_OnLoad()实现本地方法，然后直接在Java中调用本地方法。
 
-    private native void dynamicRegister(long arg);
+    private native void dynamicRegister(Context context, CharSequence arg);
 }
