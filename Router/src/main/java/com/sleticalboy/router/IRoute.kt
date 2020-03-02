@@ -1,7 +1,6 @@
 package com.sleticalboy.router
 
 import android.content.Context
-import androidx.annotation.NonNull
 
 /**
  * Created on 19-3-16.
@@ -9,16 +8,15 @@ import androidx.annotation.NonNull
  */
 interface IRoute {
 
+    /**
+     * tag for this router
+     */
+    val tag: String
+
     companion object {
         const val LOGIN = "module_login"
         const val USER = "module_user"
     }
-
-    /**
-     * tag for this router
-     */
-    @NonNull
-    fun getTag(): String
 
     /**
      * start index page for this module

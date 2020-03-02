@@ -2,8 +2,8 @@ package com.sleticalboy.noc;
 
 import android.app.Application;
 import android.content.Context;
+import androidx.annotation.NonNull;
 import com.sleticalboy.router.IAppBridge;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Created on 19-3-16.
@@ -23,7 +23,7 @@ public class MainApp extends Application {
         initRoute(this);
     }
 
-    public void initRoute(@NotNull Application app) {
+    public void initRoute(@NonNull Application app) {
         for (String bridgeCls : IAppBridge.Companion.bridges()) {
             try {
                 final Class<?> clazz = Class.forName(bridgeCls);

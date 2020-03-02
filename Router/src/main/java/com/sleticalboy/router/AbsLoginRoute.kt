@@ -6,7 +6,5 @@ package com.sleticalboy.router
  */
 abstract class AbsLoginRoute : IRoute {
 
-    final override fun getTag(): String {
-        return IRoute.LOGIN
-    }
+    final override val tag: String = IRoute.LOGIN
 }

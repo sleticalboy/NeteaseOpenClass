@@ -15,7 +15,7 @@ class Router private constructor() {
      * register route
      */
     fun registerRouter(@NonNull route: IRoute) {
-        routeMap[route.getTag()] = route
+        routeMap[route.tag] = route
     }
 
     /**
