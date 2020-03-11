@@ -1,2 +1,3 @@
 rootProject.name='NeteaseOpenClass'
-include ':app', ':User', ':Login', ':Router', ':LibLuban', ':IoC', ':LiveDataBus', ':Tinker', ':Utils', ':LibGif'
+include ':app', ':User', ':Login', ':Router', ':LibLuban', ':IoC',
+        ':LiveDataBus', ':Tinker', ':Utils', ':LibGif'
