@@ -2,14 +2,17 @@ def isApp = debugUser.toBoolean()
 apply plugin: isApp ? 'com.android.application' : 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
+    buildToolsVersion '29.0.3'
+
     defaultConfig {
         if (isApp) {
             applicationId "com.sleticalboy.userinfo"
         }
         minSdkVersion 19
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
     }
