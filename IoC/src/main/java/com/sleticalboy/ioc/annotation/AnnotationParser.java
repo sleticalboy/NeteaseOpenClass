@@ -117,7 +117,7 @@ public class AnnotationParser {
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            final Object arg = args0(args);
+            final Object arg = args0OrNull(args);
             final int key = arg == null ? method.hashCode() : arg.hashCode();
             if (times.indexOfKey(key) >= 0) {
                 if (System.currentTimeMillis() - times.get(key) < 1000) {
@@ -135,11 +135,8 @@ public class AnnotationParser {
             return null;
         }
 
-        private Object args0(Object[] args) {
-            if (args == null || args.length == 0) {
-                return null;
-            }
-            return args[0];
+        private Object args0OrNull(Object[] args) {
+            return args == null || args.length == 0 ? null : args[0];
         }
     }
 }
