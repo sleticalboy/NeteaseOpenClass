@@ -228,7 +228,7 @@ jint JNI_OnLoad(JavaVM *vm, void *reserved) {
     if ((*vm)->GetEnv(vm, (void **) &env, JNI_VERSION_1_4) != JNI_OK) {
         return -1;
     }
-    RegisterNativeMethods(env, "com/minxing/kit/helper/NativeHelper", GetMethodTables,
+    RegisterNativeMethods(env, "com/sleticalboy/ic/NativeHelper", GetMethodTables,
                           sizeof(GetMethodTables) / sizeof(JNINativeMethod));
     return JNI_VERSION_1_4;
 }

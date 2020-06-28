@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.os.MessageQueue
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.minxing.kit.helper.NativeHelper
 import kotlinx.android.synthetic.main.activity_image.*
 import java.io.File
 import java.util.*

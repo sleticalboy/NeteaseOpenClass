@@ -1,4 +1,4 @@
-package com.minxing.kit.helper;
+package com.sleticalboy.ic;
 
 import android.content.Context;
 import android.graphics.Bitmap;
