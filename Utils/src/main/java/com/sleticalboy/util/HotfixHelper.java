@@ -75,19 +75,13 @@ public final class HotfixHelper {
         // final ClassLoader sysLoader = context.getClassLoader();
         // 2, 获取修复包的 dexElements 数组
         final Object myDexElements = ReflectUtils.getDexElements(dexLoader);
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "my dex elements: " + Arrays.toString((Object[]) myDexElements));
-        }
+        Log.d(TAG, "my dex elements: " + Arrays.toString((Object[]) myDexElements));
         // 3, 获取系统原有的 dexElements 数组
         final Object sysDexElements = ReflectUtils.getDexElements(pathLoader);
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "system dex elements: " + Arrays.toString((Object[]) sysDexElements));
-        }
+        Log.d(TAG, "system dex elements: " + Arrays.toString((Object[]) sysDexElements));
         // 4, 合并成新的 dexElements 数组[将自己的数组里的元素放在合并数组的最前面]
-        final Object mergedElements = ArrayUtils.arrayMerge(myDexElements, sysDexElements);
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, "merged dex elements: " + Arrays.toString((Object[]) mergedElements));
-        }
+        final Object mergedElements = ArrayUtils.merge(myDexElements, sysDexElements);
+        Log.d(TAG, "merged dex elements: " + Arrays.toString((Object[]) mergedElements));
         // 获取系统的 pathList 对象
         // 5, 将合成的新 dexElements 数组设置给系统的 pathList 属性值
         ReflectUtils.setSystemDexElements(pathLoader, mergedElements);

@@ -9,7 +9,7 @@ import java.lang.reflect.Array;
  */
 public final class ArrayUtils {
 
-    public static Object arrayMerge(Object left, Object right) {
+    public static Object merge(Object left, Object right) {
         if (left == null && right == null) {
             return null;
         }
