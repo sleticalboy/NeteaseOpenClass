@@ -1,5 +1,4 @@
-def isApp = debugLogin.toBoolean()
-apply plugin: isApp ? 'com.android.application' : 'com.android.library'
+apply plugin: isDebuggable() ? 'com.android.application' : 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
@@ -8,7 +7,7 @@ android {
     buildToolsVersion rootProject.ext.build_version
 
     defaultConfig {
-        if (isApp) {
+        if (isDebuggable()) {
             applicationId "com.sleticalboy.login"
         }
         minSdkVersion rootProject.ext.min_version
@@ -26,7 +25,7 @@ android {
 
     sourceSets {
         main {
-            manifest.srcFile isApp
+            manifest.srcFile isDebuggable()
                     ? 'src/main/debug/AndroidManifest.xml'
                     : 'src/main/AndroidManifest.xml'
         }
@@ -40,8 +39,12 @@ dependencies {
     implementation "androidx.core:core-ktx:$ktx_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
     implementation "com.google.android.material:material:$material_version"
-    implementation "androidx.annotation:annotation:$appcompat_version"
+    implementation "androidx.annotation:annotation:$annotation_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
     implementation project(":Router")
+}
+
+private def isDebuggable() {
+    return debugLogin.toBoolean()
 }
