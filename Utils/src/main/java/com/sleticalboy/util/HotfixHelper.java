@@ -2,13 +2,14 @@ package com.sleticalboy.util;
 
 import android.content.Context;
 import android.util.Log;
-import dalvik.system.DexClassLoader;
-import dalvik.system.PathClassLoader;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+
+import dalvik.system.DexClassLoader;
+import dalvik.system.PathClassLoader;
 
 /**
  * Created on 19-4-2.
@@ -25,17 +26,14 @@ public final class HotfixHelper {
     /**
      * 存放需要修复的 dex 文件
      */
-    private static Set<File> dexFiles = new HashSet<>();
-
-    static {
-        dexFiles.clear();
-    }
+    private static final Set<File> dexFiles = new HashSet<>();
 
     private HotfixHelper() {
         throw new AssertionError();
     }
 
     public static void loadHotfixFiles(Context context) {
+        dexFiles.clear();
         // 加载热修复文件
         final File dexDir = context.getDir(DEX_DIR, Context.MODE_PRIVATE);
         final File[] files = dexDir.listFiles();
@@ -68,7 +66,6 @@ public final class HotfixHelper {
         }
         Log.d(TAG, "hot fix successful");
     }
-
 
     private static void doHotfix(PathClassLoader pathLoader, DexClassLoader dexLoader) {
         // 1, 获取系统的 PathClassLoader

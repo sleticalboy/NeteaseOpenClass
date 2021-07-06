@@ -13,25 +13,22 @@ import com.sleticalboy.router.IAppBridge;
 public class MainApp extends Application {
 
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-    }
-
-    @Override
     public void onCreate() {
         super.onCreate();
         initRoute(this);
     }
 
     public void initRoute(@NonNull Application app) {
-        for (String bridgeCls : IAppBridge.Companion.bridges()) {
+        for (String klass : IAppBridge.Companion.bridges()) {
             try {
-                final Class<?> clazz = Class.forName(bridgeCls);
-                final Object bridge = clazz.newInstance();
-                if (bridge instanceof IAppBridge) {
-                    ((IAppBridge) bridge).initRoute(app);
+                Object obj = Class.forName(klass).newInstance();
+                if (obj instanceof IAppBridge) {
+                    ((IAppBridge) obj).initRoute(app);
                 }
-            } catch (Exception ignored) {
+            } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (Throwable t) {
+                throw new RuntimeException("initRoute: " + klass + " failed.", t);
             }
         }
     }
