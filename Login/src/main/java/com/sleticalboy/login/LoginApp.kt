@@ -16,6 +16,6 @@ class LoginApp : Application(), IAppBridge {
     }
 
     override fun initRoute(app: Application) {
-        Router.get().registerRouter(LoginRoute())
+        Router.get().register(LoginRouteImpl())
     }
 }

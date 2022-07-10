@@ -17,6 +17,6 @@ class UserApp : Application(), IAppBridge {
     }
 
     override fun initRoute(app: Application) {
-        Router.get().registerRouter(UserRoute())
+        Router.get().register(UserRoute())
     }
 }

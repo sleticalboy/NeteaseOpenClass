@@ -8,11 +8,10 @@ trap onexit EXIT
 
 TMPDIR=
 
-onexit()
-{
-	if [ ! "$TMPDIR" = "" ]; then
-		rm -rf $TMPDIR
-	fi
+onexit() {
+  if [ ! "$TMPDIR" = "" ]; then
+    rm -rf $TMPDIR
+  fi
 }
 
 PACKAGE_NAME=libjpeg-turbo
@@ -21,8 +20,8 @@ SRCDIR=/home/tgall/libjpeg-turbo-android/wip
 
 umask 022
 rm -f $PACKAGE_NAME-$VERSION-cygwin.tar.bz2
-TMPDIR=`mktemp -d /tmp/ljtbuild.XXXXXX`
-__PWD=`pwd`
+TMPDIR=$(mktemp -d /tmp/ljtbuild.XXXXXX)
+__PWD=$(pwd)
 make install DESTDIR=$TMPDIR/pkg mandir=/opt/$PACKAGE_NAME/man
 rm $TMPDIR/pkg/opt/$PACKAGE_NAME/lib/*.la
 DOCDIR=$TMPDIR/pkg/usr/share/doc/$PACKAGE_NAME-$VERSION

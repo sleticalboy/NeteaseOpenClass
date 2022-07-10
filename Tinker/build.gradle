@@ -3,59 +3,60 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion rootProject.ext.compile_version
-    buildToolsVersion rootProject.ext.build_version
+  compileSdkVersion rootProject.ext.compile_version
+  buildToolsVersion rootProject.ext.build_version
 
-    defaultConfig {
-        applicationId "com.sleticalboy.tinker"
-        minSdkVersion rootProject.ext.min_version
-        targetSdkVersion rootProject.ext.target_version
-        versionCode 1
-        versionName "1.0"
-        // 开启分包
-        multiDexEnabled = true
-        // 设置分包
-        multiDexKeepFile = file('multidex-config.txt')
-    }
+  defaultConfig {
+    applicationId "com.sleticalboy.tinker"
+    minSdkVersion rootProject.ext.min_version
+    targetSdkVersion rootProject.ext.target_version
+    versionCode 1
+    versionName "1.0"
+    // 开启分包
+    multiDexEnabled = true
+    // 设置分包
+    multiDexKeepFile = file('multidex-config.txt')
+  }
 
-    buildTypes {
-        release {
-            minifyEnabled = false
-            proguardFiles = [
-                    getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
-            ]
-        }
-        debug {
-            minifyEnabled = false
-            proguardFiles = [
-                    getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-rules.pro'
-            ]
-        }
+  buildTypes {
+    release {
+      minifyEnabled = false
+      proguardFiles = [
+        getDefaultProguardFile('proguard-android-optimize.txt'),
+        'proguard-rules.pro'
+      ]
     }
-    dexOptions {
-        javaMaxHeapSize = '4g'
-        preDexLibraries = false
-        additionalParameters = [
-                '--multi-dex',
-                '--set-max-idx-number=50000',
-                '--main-dex-list=/multidex-config.txt',
-                '--minimal-max-dex'
-        ]
+    debug {
+      minifyEnabled = false
+      proguardFiles = [
+        getDefaultProguardFile('proguard-android-optimize.txt'),
+        'proguard-rules.pro'
+      ]
     }
-    compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
-    }
+  }
+  dexOptions {
+    javaMaxHeapSize = '4g'
+    preDexLibraries = false
+    additionalParameters = [
+      '--multi-dex',
+      '--set-max-idx-number=50000',
+      '--main-dex-list=/multidex-config.txt',
+      '--minimal-max-dex'
+    ]
+  }
+  compileOptions {
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+  }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.core:core-ktx:$ktx_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
-    implementation "androidx.multidex:multidex:$multidex_version"
-    implementation project(path: ':Utils')
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+  implementation "androidx.appcompat:appcompat:$appcompat_version"
+  implementation "androidx.core:core-ktx:$ktx_version"
+  implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
+  implementation "androidx.multidex:multidex:$multidex_version"
+  implementation project(path: ':Utils')
+  implementation project(path: ':Utils')
 }

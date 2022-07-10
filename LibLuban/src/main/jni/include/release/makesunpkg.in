@@ -8,17 +8,15 @@ trap onexit EXIT
 
 TMPDIR=
 
-onexit()
-{
-	if [ ! "$TMPDIR" = "" ]; then
-		rm -rf $TMPDIR
-	fi
+onexit() {
+  if [ ! "$TMPDIR" = "" ]; then
+    rm -rf $TMPDIR
+  fi
 }
 
-usage()
-{
-	echo "$0 [combined [32-bit build dir.]]"
-	exit 1
+usage() {
+  echo "$0 [combined [32-bit build dir.]]"
+  exit 1
 }
 
 COMBINED=0
@@ -31,38 +29,38 @@ SRCDIR=@abs_top_srcdir@
 BUILDDIR32=@abs_top_srcdir@/solx86
 WITH_JAVA=@WITH_JAVA@
 if [ $# -gt 0 ]; then
-	if [ "$1" = "combined" ]; then
-		COMBINED=1
-		if [ $# -gt 1 ]; then	BUILDDIR32=$2; fi
-	fi
+  if [ "$1" = "combined" ]; then
+    COMBINED=1
+    if [ $# -gt 1 ]; then BUILDDIR32=$2; fi
+  fi
 fi
 
 umask 022
-TMPDIR=`mktemp -d /tmp/$PACKAGE_NAME-build.XXXXXX`
+TMPDIR=$(mktemp -d /tmp/$PACKAGE_NAME-build.XXXXXX)
 rm -f $PACKAGE_NAME.pkg.bz2
 cp $SRCDIR/release/copyright $TMPDIR
 touch $TMPDIR/depend
-cp pkgscripts/pkginfo $TMPDIR/pkginfo 
+cp pkgscripts/pkginfo $TMPDIR/pkginfo
 
 if [ "$PKGARCH" = "i386" ]; then
-	__LIB=lib
+  __LIB=lib
 else
-	__LIB=lib/$PKGARCH
+  __LIB=lib/$PKGARCH
 fi
 
 if [ $COMBINED = 1 ]; then
-	if [ ! -d $BUILDDIR32 ]; then
-		echo ERROR: 32-bit build directory $BUILDDIR32 does not exist
-		exit 1
-	fi
-	if [ ! -f $BUILDDIR32/Makefile ]; then
-		echo ERROR: 32-bit build directory $BUILDDIR32 is not configured
-		exit 1
-	fi
-	PWD=`pwd`
-	cd $BUILDDIR32
-	make install DESTDIR=$TMPDIR mandir=/opt/$PACKAGE_NAME/man AM_MAKEFLAGS="mandir=/opt/$PACKAGE_NAME/man"
-	cd $PWD
+  if [ ! -d $BUILDDIR32 ]; then
+    echo ERROR: 32-bit build directory $BUILDDIR32 does not exist
+    exit 1
+  fi
+  if [ ! -f $BUILDDIR32/Makefile ]; then
+    echo ERROR: 32-bit build directory $BUILDDIR32 is not configured
+    exit 1
+  fi
+  PWD=$(pwd)
+  cd $BUILDDIR32
+  make install DESTDIR=$TMPDIR mandir=/opt/$PACKAGE_NAME/man AM_MAKEFLAGS="mandir=/opt/$PACKAGE_NAME/man"
+  cd $PWD
 fi
 # This mess is to work around a bug in /usr/ccs/bin/make
 make install DESTDIR=$TMPDIR libdir=/opt/$PACKAGE_NAME/$__LIB mandir=/opt/$PACKAGE_NAME/man AM_MAKEFLAGS="libdir=/opt/$PACKAGE_NAME/$__LIB mandir=/opt/$PACKAGE_NAME/man"
@@ -86,7 +84,7 @@ f none $PACKAGE_NAME/bin/wrjpgcom 0755 root bin
 d none $PACKAGE_NAME/lib 0755 root bin
 EOF
 if [ $COMBINED = 1 ]; then
-cat >>$TMPDIR/proto <<EOF
+  cat >>$TMPDIR/proto <<EOF
 f none $PACKAGE_NAME/lib/libjpeg.so.@SO_MAJOR_VERSION@.0.@SO_MINOR_VERSION@ 0755 root bin
 s none $PACKAGE_NAME/lib/libjpeg.so.@SO_MAJOR_VERSION@=libjpeg.so.@SO_MAJOR_VERSION@.0.@SO_MINOR_VERSION@
 s none $PACKAGE_NAME/lib/libjpeg.so=libjpeg.so.@SO_MAJOR_VERSION@.0.@SO_MINOR_VERSION@
@@ -96,9 +94,9 @@ f none $PACKAGE_NAME/lib/libturbojpeg.a 0644 root bin
 EOF
 fi
 if [ "${__LIB}" != "lib" ]; then
-echo d none $PACKAGE_NAME/${__LIB} 0755 root bin >>$TMPDIR/proto
-echo s none $PACKAGE_NAME/lib64=${__LIB} >>$TMPDIR/proto
-echo s none $PACKAGE_NAME/lib/64=$PKGARCH >>$TMPDIR/proto
+  echo d none $PACKAGE_NAME/${__LIB} 0755 root bin >>$TMPDIR/proto
+  echo s none $PACKAGE_NAME/lib64=${__LIB} >>$TMPDIR/proto
+  echo s none $PACKAGE_NAME/lib/64=$PKGARCH >>$TMPDIR/proto
 fi
 cat >>$TMPDIR/proto <<EOF
 f none $PACKAGE_NAME/${__LIB}/libjpeg.so.@SO_MAJOR_VERSION@.0.@SO_MINOR_VERSION@ 0755 root bin
@@ -128,13 +126,13 @@ f none $PACKAGE_NAME/doc/README-turbo.txt 0644 root bin
 f none $PACKAGE_NAME/doc/usage.txt 0644 root bin
 EOF
 if [ $WITH_JAVA = 1 ]; then
-echo d none $PACKAGE_NAME/classes 0755 root bin >>$TMPDIR/proto
-echo f none $PACKAGE_NAME/classes/turbojpeg.jar 0644 root bin >>$TMPDIR/proto
+  echo d none $PACKAGE_NAME/classes 0755 root bin >>$TMPDIR/proto
+  echo f none $PACKAGE_NAME/classes/turbojpeg.jar 0644 root bin >>$TMPDIR/proto
 fi
 
 pkgmk -o -r $TMPDIR/opt -d $TMPDIR -a i386 -f $TMPDIR/proto
 pkgtrans -s $TMPDIR $TMPDIR/$PACKAGE_NAME-$VERSION.pkg $PACKAGE_NAME
 bzip2 $TMPDIR/$PACKAGE_NAME-$VERSION.pkg
-cp $TMPDIR/$PACKAGE_NAME-$VERSION.pkg.bz2 . 
+cp $TMPDIR/$PACKAGE_NAME-$VERSION.pkg.bz2 .
 
 exit

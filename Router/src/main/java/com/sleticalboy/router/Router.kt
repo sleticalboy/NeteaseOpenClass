@@ -11,25 +11,24 @@ class Router private constructor() {
     /**
      * register route
      */
-    fun registerRouter(route: IRoute) {
+    fun register(route: IRoute) {
         routeMap[route.tag] = route
     }
 
     /**
      * login router
      */
-    fun loginRouter(): AbsLoginRoute? = routeMap[IRoute.LOGIN] as AbsLoginRoute?
+    fun loginRouter(): ILoginRoute? = routeMap[IRoute.LOGIN] as ILoginRoute?
 
     /**
      * user info router
      */
     fun userRouter(): AbsUserRoute? = routeMap[IRoute.USER] as AbsUserRoute?
 
-    private object Singleton {
-        val router = Router()
-    }
-
     companion object {
-        fun get(): Router = Singleton.router
+
+        val router = Router()
+
+        fun get(): Router = router
     }
 }

@@ -3,39 +3,38 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion rootProject.ext.compile_version
-    buildToolsVersion rootProject.ext.build_version
+  compileSdkVersion rootProject.ext.compile_version
+  buildToolsVersion rootProject.ext.build_version
 
-    defaultConfig {
-        applicationId "com.sleticalboy.noc"
-        minSdkVersion rootProject.ext.min_version
-        targetSdkVersion rootProject.ext.target_version
-        versionCode 1
-        versionName "1.0"
+  defaultConfig {
+    applicationId "com.sleticalboy.noc"
+    minSdkVersion rootProject.ext.min_version
+    targetSdkVersion rootProject.ext.target_version
+    versionCode 1
+    versionName "1.0"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
+  }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.core:core-ktx:$ktx_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
-    implementation project(path: ':Router')
-    println 'config[user: ' + debugUser + ', login: ' + debugLogin + ']'
-    if (!debugUser.toBoolean()) {
-        println 'include user module'
-        implementation project(path: ':User')
-    }
-    if (!debugLogin.toBoolean()) {
-        println 'include login module'
-        implementation project(path: ':Login')
-    }
-
+  implementation fileTree(dir: 'libs', include: ['*.jar'])
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+  implementation "androidx.appcompat:appcompat:$appcompat_version"
+  implementation "androidx.core:core-ktx:$ktx_version"
+  implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
+  implementation project(path: ':Router')
+  println 'config[user: ' + debugUser + ', login: ' + debugLogin + ']'
+  if (!debugUser.toBoolean()) {
+    println 'include user module'
+    implementation project(path: ':User')
+  }
+  if (!debugLogin.toBoolean()) {
+    println 'include login module'
+    implementation project(path: ':Login')
+  }
 }

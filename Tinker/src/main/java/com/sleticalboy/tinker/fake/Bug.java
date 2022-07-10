@@ -7,9 +7,9 @@ package com.sleticalboy.tinker.fake;
  */
 public final class Bug {
 
-    public String bug() {
-        int i = 10;
-        int j = 1;
-        return "" + i / j;
-    }
+  public String bug() {
+    int i = 10;
+    int j = 1;
+    return "" + i / j;
+  }
 }

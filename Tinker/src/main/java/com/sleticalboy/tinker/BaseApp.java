@@ -12,15 +12,15 @@ import com.sleticalboy.util.HotfixHelper;
  */
 public class BaseApp extends Application {
 
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(base);
-    }
+  @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    MultiDex.install(base);
+  }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        HotfixHelper.loadHotfixFiles(this);
-    }
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    HotfixHelper.loadHotfixFiles(this);
+  }
 }

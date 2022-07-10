@@ -1,13 +1,12 @@
 package com.sleticalboy.login.ui.login
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
+import com.sleticalboy.login.R
 import com.sleticalboy.login.data.LoginRepository
 import com.sleticalboy.login.data.Result
-
-import com.sleticalboy.login.R
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 

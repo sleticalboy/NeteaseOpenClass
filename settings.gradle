@@ -1,4 +1,4 @@
-rootProject.name='noc'
+rootProject.name = 'noc'
 
 include ':app'
 include ':User'

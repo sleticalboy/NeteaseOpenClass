@@ -38,55 +38,61 @@ public class TJTransform extends Rectangle {
   /**
    * The number of lossless transform operations
    */
-  final public static int NUMOP         = 8;
+  final public static int NUMOP = 8;
   /**
    * Do not transform the position of the image pixels.
    */
-  final public static int OP_NONE       = 0;
+  final public static int OP_NONE = 0;
   /**
    * Flip (mirror) image horizontally.  This transform is imperfect if there
    * are any partial MCU blocks on the right edge.
+   *
    * @see #OPT_PERFECT
    */
-  final public static int OP_HFLIP      = 1;
+  final public static int OP_HFLIP = 1;
   /**
    * Flip (mirror) image vertically.  This transform is imperfect if there are
    * any partial MCU blocks on the bottom edge.
+   *
    * @see #OPT_PERFECT
    */
-  final public static int OP_VFLIP      = 2;
+  final public static int OP_VFLIP = 2;
   /**
    * Transpose image (flip/mirror along upper left to lower right axis).  This
    * transform is always perfect.
+   *
    * @see #OPT_PERFECT
    */
-  final public static int OP_TRANSPOSE  = 3;
+  final public static int OP_TRANSPOSE = 3;
   /**
    * Transverse transpose image (flip/mirror along upper right to lower left
    * axis).  This transform is imperfect if there are any partial MCU blocks in
    * the image.
+   *
    * @see #OPT_PERFECT
    */
   final public static int OP_TRANSVERSE = 4;
   /**
    * Rotate image clockwise by 90 degrees.  This transform is imperfect if
    * there are any partial MCU blocks on the bottom edge.
+   *
    * @see #OPT_PERFECT
    */
-  final public static int OP_ROT90      = 5;
+  final public static int OP_ROT90 = 5;
   /**
    * Rotate image 180 degrees.  This transform is imperfect if there are any
    * partial MCU blocks in the image.
+   *
    * @see #OPT_PERFECT
    */
-  final public static int OP_ROT180     = 6;
+  final public static int OP_ROT180 = 6;
   /**
    * Rotate image counter-clockwise by 90 degrees.  This transform is imperfect
    * if there are any partial MCU blocks on the right edge.
+   *
    * @see #OPT_PERFECT
    */
-  final public static int OP_ROT270     = 7;
-
+  final public static int OP_ROT270 = 7;
 
   /**
    * This option will cause {@link TJTransformer#transform
@@ -101,21 +107,21 @@ public class TJTransform extends Rectangle {
    * partial MCU blocks that cannot be transformed will be left in place, which
    * will create odd-looking strips on the right or bottom edge of the image.
    */
-  final public static int OPT_PERFECT  = 1;
+  final public static int OPT_PERFECT = 1;
   /**
    * This option will discard any partial MCU blocks that cannot be
    * transformed.
    */
-  final public static int OPT_TRIM     = 2;
+  final public static int OPT_TRIM = 2;
   /**
    * This option will enable lossless cropping.
    */
-  final public static int OPT_CROP     = 4;
+  final public static int OPT_CROP = 4;
   /**
    * This option will discard the color data in the input image and produce
    * a grayscale output image.
    */
-  final public static int OPT_GRAY     = 8;
+  final public static int OPT_GRAY = 8;
   /**
    * This option will prevent {@link TJTransformer#transform
    * TJTransformer.transform()} from outputting a JPEG image for this
@@ -125,7 +131,6 @@ public class TJTransform extends Rectangle {
    */
   final public static int OPT_NOOUTPUT = 16;
 
-  
   /**
    * Create a new lossless transform instance.
    */
@@ -137,28 +142,24 @@ public class TJTransform extends Rectangle {
    *
    * @param x the left boundary of the cropping region.  This must be evenly
    * divisible by the MCU block width (see {@link TJ#getMCUWidth})
-   *
    * @param y the upper boundary of the cropping region.  This must be evenly
    * divisible by the MCU block height (see {@link TJ#getMCUHeight})
-   *
    * @param w the width of the cropping region.  Setting this to 0 is the
    * equivalent of setting it to the width of the source JPEG image - x.
-   *
    * @param h the height of the cropping region.  Setting this to 0 is the
    * equivalent of setting it to the height of the source JPEG image - y.
-   *
    * @param op one of the transform operations (<code>OP_*</code>)
-   *
    * @param options the bitwise OR of one or more of the transform options
    * (<code>OPT_*</code>)
-   *
    * @param cf an instance of an object that implements the {@link
    * TJCustomFilter} interface, or null if no custom filter is needed
    */
   public TJTransform(int x, int y, int w, int h, int op, int options,
     TJCustomFilter cf) throws Exception {
     super(x, y, w, h);
-    this.op = op;  this.options = options;  this.cf = cf;
+    this.op = op;
+    this.options = options;
+    this.cf = cf;
   }
 
   /**
@@ -168,19 +169,18 @@ public class TJTransform extends Rectangle {
    * region.  See {@link
    * #TJTransform(int, int, int, int, int, int, TJCustomFilter)} for more
    * detail.
-   *
    * @param op one of the transform operations (<code>OP_*</code>)
-   *
    * @param options the bitwise OR of one or more of the transform options
    * (<code>OPT_*</code>)
-   *
    * @param cf an instance of an object that implements the {@link
    * TJCustomFilter} interface, or null if no custom filter is needed
    */
   public TJTransform(Rectangle r, int op, int options,
     TJCustomFilter cf) throws Exception {
     super(r);
-    this.op = op;  this.options = options;  this.cf = cf;
+    this.op = op;
+    this.options = options;
+    this.cf = cf;
   }
 
   /**
